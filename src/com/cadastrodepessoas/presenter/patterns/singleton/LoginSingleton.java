@@ -145,10 +145,11 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
         return senha1.equals(senha2);
     }
 
-    public void autenticar(IStrategyLogin logavel) throws Exception {
+    public boolean autenticar(IStrategyLogin logavel) throws Exception {
         if (!estaLogado()) {
             login(logavel);
         }
+        return estaLogado();
     }
 
     public Usuario getUsuarioLogado(IStrategyLogin logavel) throws Exception {
