@@ -7,8 +7,8 @@ package com.cadastrodepessoas.presenter.patterns.singleton;
 
 import com.cadastrodepessoas.dao.IODAO;
 import com.cadastrodepessoas.dao.IUsuarioDAO;
-import com.cadastrodepessoas.model.ILogavel;
 import com.cadastrodepessoas.model.Usuario;
+import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
 import com.cadastrodepessoas.view.LoginView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,9 +27,10 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
 
     private LoginSingleton() throws Exception {
         usuarios = carregaDAOLog("UsuarioDAO");
+        usuarios.carregaUsuarios();
     }
 
-    public void adicionaUsuario(ILogavel logavel, boolean administrador) {
+    public void adicionaUsuario(IStrategyLogin logavel, boolean administrador) {
         LoginView userView = new LoginView();
         userView.setTitle("Adicionar Usuario");
         userView.getProntoBTN().addActionListener((ActionEvent e) -> {
@@ -39,12 +40,21 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
                     String senha = new String(userView.getSenhaTXT().getPassword());
                     Usuario usuario = new Usuario(nome, senha, administrador);
 
+                    if (usuarios.contains(nome)) {
+                        JOptionPane.showMessageDialog(userView,
+                                "Esse usuario já existe, tente outro");
+                        return;
+                    }
+
                     usuarios.add(usuario);
                     userView.setVisible(false);
                     userView.dispose();
-                    //  LogSingleton.getInstancia().addUsuario(usuario);
+                    LogSingleton.getInstancia().addUsuario(usuario);
                     JOptionPane.showMessageDialog(userView,
                             "O usuario foi adicionado com sucesso");
+                    if (administrador) {
+                        login(logavel);
+                    }
                 } catch (Exception ex) {
                     throw new RuntimeException(
                             "ERRO: Não foi possivel adicionar usuario\n" + ex);
@@ -67,13 +77,16 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
         return usuarioLogado != null;
     }
 
-    public void logoff() {
+    public void logoff() throws Exception {
+        LogSingleton.getInstancia().loginUsuario(usuarioLogado, true);
         usuarioLogado = null;
     }
 
-    public void login(ILogavel logavel) throws Exception {
-        if (usuarios.count() >= 1) {
+    public void login(IStrategyLogin logavel) throws Exception {
+        if (hasUsuarios()) {
             if (view == null) {
+                view = new LoginView();
+                view.setTitle("Login");
                 view = new LoginView();
                 view.getProntoBTN().addActionListener(new ActionListener() {
                     @Override
@@ -88,19 +101,21 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
                 view.toFront();
                 view.setVisible(true);
             }
+            JOptionPane.showMessageDialog(view, "Faça login para continuar");
         } else {
             adicionaUsuario(logavel, true);
-            login(logavel);
         }
     }
 
-    private void prontoBtn(ActionEvent e, LoginView view, ILogavel logavel) {
+    private void prontoBtn(ActionEvent e, LoginView view, IStrategyLogin logavel) {
         if (logar(view)) {
             view.alertUser("Bem Vindo " + usuarioLogado.getNome());
             view.setVisible(false);
             view.dispose();
             this.view = null;
             try {
+                logavel.getMainView().setTitle("Cadastro de Pessoas - " + LoginSingleton.getInstancia().getUsuario().getNome());
+                LogSingleton.getInstancia().loginUsuario(usuarioLogado, false);
                 logavel.continuar();
             } catch (Exception ex) {
                 throw new RuntimeException(
@@ -130,19 +145,23 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
         return senha1.equals(senha2);
     }
 
-    public void autenticar(ILogavel logavel) throws Exception {
+    public void autenticar(IStrategyLogin logavel) throws Exception {
         if (!estaLogado()) {
             login(logavel);
         }
     }
 
-    public Usuario getUsuarioLogado(ILogavel logavel) throws Exception {
+    public Usuario getUsuarioLogado(IStrategyLogin logavel) throws Exception {
         autenticar(logavel);
         return usuarioLogado;
     }
 
     public Usuario getUsuario() {
         return usuarioLogado;
+    }
+
+    public boolean hasUsuarios() throws Exception {
+        return usuarios.count() > 0;
     }
 
 }

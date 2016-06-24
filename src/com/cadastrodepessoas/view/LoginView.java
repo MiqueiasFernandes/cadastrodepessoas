@@ -96,25 +96,12 @@ public class LoginView extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "O tamanho minimo de senha é 3");
             return false;
         }
-        boolean containsLetra = false, containsNumber = false;
 
-        for (char c : senhaTXT.getPassword()) {
-
-            Character.isLetter(c);
-            containsLetra = true;
-
-            Character.isDigit(c);
-            containsNumber = true;
-
-            if (containsLetra && containsNumber) {
-                return true;
-            }
+        if (usuarioTXT.getText().matches("[a-zA-Z]+")) {
+            return true;
         }
 
-        if (!containsLetra || !containsNumber) {
-            JOptionPane.showMessageDialog(this, "Use letras e numeros na senha");
-            return false;
-        }
+        JOptionPane.showMessageDialog(this, "Use apenas letras para o nome, sem espaço");
         return false;
     }
 

@@ -11,6 +11,8 @@ import com.cadastrodepessoas.presenter.MainPresenter;
 import com.cadastrodepessoas.presenter.patterns.observer.proxy.PessoasProxy;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
+import com.cadastrodepessoas.view.MainView;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,9 +29,16 @@ public class Cadastrodepessoas extends IODAO<IPessoaDAO> {
 
             LogSingleton log = LogSingleton.getInstancia();
             LoginSingleton login = LoginSingleton.getInstancia();
-            IPessoaDAO pessoas = new PessoasProxy();
 
-            new MainPresenter(pessoas);
+            MainView view = new MainView();
+
+            if (!login.hasUsuarios()) {
+                JOptionPane.showMessageDialog(view, "Cadastre o usuario administrador");
+            }
+
+            IPessoaDAO pessoas = new PessoasProxy(view);
+
+            new MainPresenter(pessoas, view);
 
         } catch (Exception ex) {
             System.err.println(

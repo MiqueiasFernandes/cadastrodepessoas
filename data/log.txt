@@ -1,0 +1,4 @@
+novo usuario Usuario{nome=m, senha=***, isadministrador=true} em (24/06/2016 11:00:55)
+usuario Usuario{nome=m, senha=***, isadministrador=true} entrou  em (24/06/2016 11:01:19)
+usuario Usuario{nome=m, senha=***, isadministrador=true} entrou  em (24/06/2016 11:01:36)
+usuario Usuario{nome=m, senha=***, isadministrador=true} entrou  em (24/06/2016 11:11:53)

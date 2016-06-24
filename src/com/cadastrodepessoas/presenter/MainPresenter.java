@@ -6,6 +6,7 @@
 package com.cadastrodepessoas.presenter;
 
 import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
 import com.cadastrodepessoas.view.MainView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +21,8 @@ public class MainPresenter {
     private final MainView view;
     private final IPessoaDAO pessoas;
 
-    public MainPresenter(IPessoaDAO pessoas) {
-        view = new MainView();
+    public MainPresenter(IPessoaDAO pessoas, MainView view) {
+        this.view = view;
         this.pessoas = pessoas;
 
         try {

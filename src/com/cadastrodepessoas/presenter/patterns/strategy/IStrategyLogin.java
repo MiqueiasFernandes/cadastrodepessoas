@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cadastrodepessoas.model;
+package com.cadastrodepessoas.presenter.patterns.strategy;
 
 import com.cadastrodepessoas.view.MainView;
 
@@ -11,7 +11,7 @@ import com.cadastrodepessoas.view.MainView;
  *
  * @author mfernandes
  */
-public interface ILogavel {
+public interface IStrategyLogin {
 
     MainView getMainView();
 

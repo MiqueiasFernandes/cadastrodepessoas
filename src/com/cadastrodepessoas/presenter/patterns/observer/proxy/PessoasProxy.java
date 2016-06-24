@@ -6,10 +6,10 @@
 package com.cadastrodepessoas.presenter.patterns.observer.proxy;
 
 import com.cadastrodepessoas.dao.IPessoaDAO;
-import com.cadastrodepessoas.model.ILogavel;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.observer.AbstractObservado;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
+import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
 import com.cadastrodepessoas.view.MainView;
 import java.util.TreeSet;
 
@@ -17,19 +17,19 @@ import java.util.TreeSet;
  *
  * @author mfernandes
  */
-public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPessoaDAO, ILogavel {
+public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPessoaDAO, IStrategyLogin {
 
     PessoasReal pessoasReal;
     MainView view;
 
-    public PessoasProxy() throws Exception {
+    public PessoasProxy(MainView view) throws Exception {
         pessoasReal = new PessoasReal();
+        this.view = view;
     }
 
     public boolean autenticar() throws Exception {
         if (!LoginSingleton.getInstancia().estaLogado()) {
             LoginSingleton.getInstancia().autenticar(this);
-            throw new Exception("é necessario logar");
         }
         return true;
     }
