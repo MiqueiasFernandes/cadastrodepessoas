@@ -5,13 +5,18 @@
  */
 package com.cadastrodepessoas.presenter.patterns.strategy;
 
+import java.awt.Component;
+
 /**
  *
  * @author mfernandes
  */
-public interface IStrategyLogin {
+public interface IStrategyDesktop {
 
-    IStrategyDesktop getDesktop();
+    public void addComponent(Component componente);
 
-    void continuar() throws Exception;
+    public Component getComponent();
+
+    public void setTextNotificacao(String text);
+
 }

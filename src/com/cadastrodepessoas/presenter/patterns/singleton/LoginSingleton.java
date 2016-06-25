@@ -26,11 +26,11 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
     private LoginView view;
 
     private LoginSingleton() throws Exception {
-        usuarios = carregaDAOLog("UsuarioDAO");
+        usuarios = carregaDAO("UsuarioDAO", "usuario/", true);
         usuarios.carregaUsuarios();
     }
 
-    public void adicionaUsuario(IStrategyLogin logavel, boolean administrador) {
+    public void adicionaUsuario(IStrategyLogin desktop, boolean administrador) {
         LoginView userView = new LoginView();
         userView.setTitle("Adicionar Usuario");
         userView.getProntoBTN().addActionListener((ActionEvent e) -> {
@@ -53,7 +53,7 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
                     JOptionPane.showMessageDialog(userView,
                             "O usuario foi adicionado com sucesso");
                     if (administrador) {
-                        login(logavel);
+                        login(desktop);
                     }
                 } catch (Exception ex) {
                     throw new RuntimeException(
@@ -61,7 +61,7 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
                 }
             }
         });
-        logavel.getMainView().getDesktopPane().add(userView);
+        desktop.getDesktop().addComponent(userView);
         userView.setVisible(true);
         userView.toFront();
     }
@@ -82,19 +82,17 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
         usuarioLogado = null;
     }
 
-    public void login(IStrategyLogin logavel) throws Exception {
+    public void login(IStrategyLogin desktop) throws Exception {
         if (hasUsuarios()) {
             if (view == null) {
-                view = new LoginView();
-                view.setTitle("Login");
                 view = new LoginView();
                 view.getProntoBTN().addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        prontoBtn(e, view, logavel);
+                        prontoBtn(e, view, desktop);
                     }
                 });
-                logavel.getMainView().getDesktopPane().add(view);
+                desktop.getDesktop().addComponent(view);
                 view.setTitle("Login");
                 view.setVisible(true);
             } else {
@@ -103,20 +101,20 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
             }
             JOptionPane.showMessageDialog(view, "Faça login para continuar");
         } else {
-            adicionaUsuario(logavel, true);
+            adicionaUsuario(desktop, true);
         }
     }
 
-    private void prontoBtn(ActionEvent e, LoginView view, IStrategyLogin logavel) {
+    private void prontoBtn(ActionEvent e, LoginView view, IStrategyLogin desktop) {
         if (logar(view)) {
             view.alertUser("Bem Vindo " + usuarioLogado.getNome());
             view.setVisible(false);
             view.dispose();
             this.view = null;
             try {
-                logavel.getMainView().setTitle("Cadastro de Pessoas - " + LoginSingleton.getInstancia().getUsuario().getNome());
+                desktop.getDesktop().setTextNotificacao("Cadastro de Pessoas - " + LoginSingleton.getInstancia().getUsuario().getNome());
                 LogSingleton.getInstancia().loginUsuario(usuarioLogado, false);
-                logavel.continuar();
+                desktop.continuar();
             } catch (Exception ex) {
                 throw new RuntimeException(
                         "ERRO: Não foi possivel continuar apos login\n" + ex);

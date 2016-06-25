@@ -1,4 +1,4 @@
-novo usuario Usuario{nome=miqueias, senha=***, isadministrador=true} em (24/06/2016 11:26:08)
-usuario Usuario{nome=miqueias, senha=***, isadministrador=true} entrou  em (24/06/2016 11:26:20)
-usuario Usuario{nome=miqueias, senha=***, isadministrador=true} entrou  em (24/06/2016 11:44:00)
-usuario Usuario{nome=miqueias, senha=***, isadministrador=true} entrou  em (24/06/2016 11:59:15)
+Tipo de log alterado Usuario{nome=miqueias, senha=***, isadministrador=true} [ (24/06/2016 22:53:13)]
+Tipo de log alterado null [ (24/06/2016 22:54:16)]
+usuario Usuario{nome=miqueias, senha=***, isadministrador=true} fez logoff  em (24/06/2016 23:03:06)
+novo usuario Usuario{nome=joao, senha=****, isadministrador=false} adicionado por Usuario{nome=miqueias, senha=***, isadministrador=true} em (24/06/2016 23:03:22)

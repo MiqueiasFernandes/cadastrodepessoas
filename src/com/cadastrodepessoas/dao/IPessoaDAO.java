@@ -5,6 +5,7 @@
  */
 package com.cadastrodepessoas.dao;
 
+import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import java.util.TreeSet;
 
@@ -16,7 +17,7 @@ public interface IPessoaDAO {
 
     public abstract boolean add(Pessoa pessoa) throws Exception;
 
-    public abstract void addAll(TreeSet<Pessoa> pessoas) throws Exception;
+    public abstract void importar(Importa<Pessoa> importa) throws Exception;
 
     public abstract boolean altera(Pessoa novaPessoa, String nome) throws Exception;
 

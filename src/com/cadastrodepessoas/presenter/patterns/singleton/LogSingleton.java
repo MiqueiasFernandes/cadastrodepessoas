@@ -8,10 +8,14 @@ package com.cadastrodepessoas.presenter.patterns.singleton;
 import com.cadastrodepessoas.dao.ILogDAO;
 import com.cadastrodepessoas.dao.IODAO;
 import com.cadastrodepessoas.model.Usuario;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Properties;
 
 /**
  *
@@ -20,11 +24,11 @@ import java.util.Locale;
 public final class LogSingleton extends IODAO<ILogDAO> {
 
     private static final String logpPath = "data/log";
-    private final ILogDAO logDAO;
+    private ILogDAO logDAO;
     private static LogSingleton singleton;
 
     private LogSingleton() throws Exception {
-        logDAO = carregaDAOLog("LogDAO");
+        logDAO = carregaDAO("LogDAO", "log/", true);
         logDAO.carregaArquivo(logpPath);
     }
 
@@ -48,8 +52,7 @@ public final class LogSingleton extends IODAO<ILogDAO> {
     }
 
     String getUsertTime() throws Exception {
-        return " por " + LoginSingleton.getInstancia().getUsuario()
-                + " em " + getTime();
+        return LoginSingleton.getInstancia().getUsuario() + " " + getTime();
     }
 
     public void importaContatos(int sucesso, int incompletos) throws Exception {
@@ -90,6 +93,19 @@ public final class LogSingleton extends IODAO<ILogDAO> {
 
     public void loginUsuario(Usuario usuario, boolean saiu) throws Exception {
         getLogDAO().loginUsuario(usuario, saiu, getTime());
+    }
+
+    public void setLogDAO(ILogDAO iLogDAO) throws Exception {
+        this.logDAO = iLogDAO;
+        this.logDAO.carregaArquivo(logpPath);
+
+        File file = new File("data/dao.properties");
+        Properties properties = new Properties();
+        properties.load(new FileReader(file));
+        properties.put("LogDAO", logDAO.getName());
+        properties.store(new FileWriter(file), "salvo automaticamente " + getUsertTime());
+
+        logDAO.append("Tipo de log alterado " + getUsertTime());
     }
 
     public ILogDAO getLogDAO() throws Exception {

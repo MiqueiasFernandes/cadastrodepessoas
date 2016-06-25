@@ -7,7 +7,10 @@ package com.cadastrodepessoas.presenter.patterns.observer.proxy;
 
 import com.cadastrodepessoas.dao.IODAO;
 import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
+import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
@@ -17,24 +20,61 @@ import java.util.TreeSet;
 public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
 
     private final IPessoaDAO pessoaDAO;
+    private final LogSingleton logSingleton;
 
     public PessoasReal() throws Exception {
-        pessoaDAO = carregaDAOLog("PessoaDAO");
+        pessoaDAO = carregaDAO("PessoaDAO", "pessoa/", true);
+        logSingleton = LogSingleton.getInstancia();
+    }
+
+    public void levantarException(String operacao) throws Exception {
+        throw new Exception("Houve um erro enquanto tentava " + operacao
+                + "\nconsulte o log para mais detalhes.");
     }
 
     @Override
     public boolean add(Pessoa pessoa) throws Exception {
-        return pessoaDAO.add(pessoa);
+        boolean adicionou = false;
+        try {
+            adicionou = pessoaDAO.add(pessoa);
+            if (adicionou) {
+                logSingleton.incluirContatoLog(pessoa.getNome(), null);
+            }
+        } catch (Exception ex) {
+            logSingleton.incluirContatoLog(pessoa.getNome(), ex);
+            levantarException("adicionar");
+        }
+        return adicionou;
     }
 
     @Override
-    public void addAll(TreeSet<Pessoa> pessoas) throws Exception {
-        pessoaDAO.addAll(pessoas);
+    public void importar(Importa<Pessoa> importa) throws Exception {
+        pessoaDAO.importar(importa);
+        if (importa.hasErros()) {
+            Iterator<Exception> iteratorErros = importa.getIteratorErros();
+            while (iteratorErros.hasNext()) {
+                Exception next = iteratorErros.next();
+                logSingleton.importaContatosFalha(next);
+            }
+            levantarException("importar");
+        } else {
+            logSingleton.importaContatos(importa.getImportadosComSucesso(), importa.getImportadosIncompletos());
+        }
     }
 
     @Override
     public boolean altera(Pessoa novaPessoa, String nome) throws Exception {
-        return pessoaDAO.altera(novaPessoa, nome);
+        boolean alterou = false;
+        try {
+            alterou = pessoaDAO.altera(novaPessoa, nome);
+            if (alterou) {
+                logSingleton.corrigirContatoLog(nome, null);
+            }
+        } catch (Exception ex) {
+            logSingleton.corrigirContatoLog(nome, ex);
+            levantarException("alterar");
+        }
+        return alterou;
     }
 
     @Override
@@ -43,23 +83,57 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
     }
 
     @Override
-    public boolean contains(Pessoa p) throws Exception {
-        return pessoaDAO.contains(p);
+    public boolean contains(Pessoa pessoa) throws Exception {
+        boolean contem = false;
+        try {
+            contem = pessoaDAO.contains(pessoa);
+            logSingleton.consultarContatoLog(pessoa.getNome(), null);
+        } catch (Exception ex) {
+            logSingleton.consultarContatoLog(pessoa.getNome(), ex);
+            levantarException("consultar");
+        }
+        return contem;
     }
 
     @Override
     public Pessoa getPessoaByName(String nome) throws Exception {
-        return pessoaDAO.getPessoaByName(nome);
+        Pessoa pessoa = null;
+        try {
+            pessoa = pessoaDAO.getPessoaByName(nome);
+            logSingleton.consultarContatoLog(nome, null);
+        } catch (Exception ex) {
+            logSingleton.consultarContatoLog(nome, ex);
+            levantarException("consultar");
+        }
+        return pessoa;
     }
 
     @Override
     public TreeSet<Pessoa> getTreeSet() throws Exception {
-        return pessoaDAO.getTreeSet();
+        TreeSet<Pessoa> pessoas = null;
+        try {
+            pessoas = pessoaDAO.getTreeSet();
+            logSingleton.consultarContatoLog("TODOAS PESSOAS", null);
+        } catch (Exception ex) {
+            logSingleton.consultarContatoLog("TODOAS PESSOAS", ex);
+            levantarException("consultar");
+        }
+        return pessoas;
     }
 
     @Override
     public boolean remove(String nome) throws Exception {
-        return pessoaDAO.remove(nome);
+        boolean removeu = false;
+        try {
+            removeu = pessoaDAO.remove(nome);
+            if (removeu) {
+                logSingleton.excluirContatoLog(nome, null);
+            }
+        } catch (Exception ex) {
+            logSingleton.excluirContatoLog(nome, ex);
+            levantarException("remover");
+        }
+        return removeu;
     }
 
 }

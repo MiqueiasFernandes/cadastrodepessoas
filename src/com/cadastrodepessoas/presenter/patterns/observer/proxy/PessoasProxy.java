@@ -6,9 +6,11 @@
 package com.cadastrodepessoas.presenter.patterns.observer.proxy;
 
 import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.observer.AbstractObservado;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
+import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
 import com.cadastrodepessoas.view.MainView;
 import java.util.TreeSet;
@@ -37,11 +39,6 @@ public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPess
     }
 
     @Override
-    public MainView getMainView() {
-        return view;
-    }
-
-    @Override
     public void continuar() throws Exception {
         carregaPessoas();
     }
@@ -50,15 +47,6 @@ public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPess
     public boolean add(Pessoa pessoa) throws Exception {
         if (autenticar()) {
             return pessoasReal.add(pessoa);
-        } else {
-            throw new Exception("É necessario estar autenticado para efetuar esta operação");
-        }
-    }
-
-    @Override
-    public void addAll(TreeSet<Pessoa> pessoas) throws Exception {
-        if (autenticar()) {
-            pessoasReal.addAll(pessoas);
         } else {
             throw new Exception("É necessario estar autenticado para efetuar esta operação");
         }
@@ -115,6 +103,20 @@ public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPess
         } else {
             throw new Exception("É necessario estar autenticado para efetuar esta operação");
         }
+    }
+
+    @Override
+    public void importar(Importa<Pessoa> importa) throws Exception {
+        if (autenticar()) {
+            pessoasReal.importar(importa);
+        } else {
+            throw new Exception("É necessario estar autenticado para efetuar esta operação");
+        }
+    }
+
+    @Override
+    public IStrategyDesktop getDesktop() {
+        return view;
     }
 
 }

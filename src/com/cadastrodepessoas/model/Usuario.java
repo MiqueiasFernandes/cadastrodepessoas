@@ -29,14 +29,18 @@ public class Usuario implements Comparable<Usuario> {
         return senha;
     }
 
+    public String getSenhaOfuscada() {
+        return senha.replaceAll("[a-z A-Z 0-9]", "*");
+    }
+
     public boolean isAdministrador() {
         return isadministrador;
     }
 
     @Override
     public String toString() {
-        return "Usuario{" + "nome=" + nome + ", senha=" 
-                + senha.replaceAll("[a-z A-Z 0-9]", "*") 
+        return "Usuario{" + "nome=" + nome + ", senha="
+                + getSenhaOfuscada()
                 + ", isadministrador=" + isadministrador + '}';
     }
 

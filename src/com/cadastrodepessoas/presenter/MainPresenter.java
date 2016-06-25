@@ -7,6 +7,7 @@ package com.cadastrodepessoas.presenter;
 
 import com.cadastrodepessoas.dao.IPessoaDAO;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
+import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
 import com.cadastrodepessoas.view.MainView;
 import java.awt.event.ActionEvent;
@@ -45,7 +46,11 @@ public final class MainPresenter implements IStrategyLogin {
         view.getConfigurarJMenu().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                configurarMenu(e);
+                try {
+                    configurarMenu(e);
+                } catch (Exception ex) {
+                    alertUser("ERRO: " + ex);
+                }
             }
         });
 
@@ -56,6 +61,7 @@ public final class MainPresenter implements IStrategyLogin {
             }
         });
 
+        view.setLocationRelativeTo(null);
         view.setVisible(true);
     }
 
@@ -63,9 +69,13 @@ public final class MainPresenter implements IStrategyLogin {
         try {
             return LoginSingleton.getInstancia().autenticar(this);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(view, "ERRO: " + ex);
+            alertUser("ERRO: " + ex);
         }
         return false;
+    }
+
+    public void alertUser(String message) {
+        JOptionPane.showMessageDialog(view, message);
     }
 
     void adicionarMenu(ActionEvent e) {
@@ -80,9 +90,9 @@ public final class MainPresenter implements IStrategyLogin {
         }
     }
 
-    void configurarMenu(ActionEvent e) {
+    void configurarMenu(ActionEvent e) throws Exception {
         if (autenticar()) {
-
+            new ConfigurarPresenter(view);
         }
     }
 
@@ -92,13 +102,13 @@ public final class MainPresenter implements IStrategyLogin {
     }
 
     @Override
-    public MainView getMainView() {
-        return view;
+    public void continuar() throws Exception {
+        pessoas.carregaPessoas();
     }
 
     @Override
-    public void continuar() throws Exception {
-        pessoas.carregaPessoas();
+    public IStrategyDesktop getDesktop() {
+        return view;
     }
 
 }

@@ -6,7 +6,6 @@
 package com.cadastrodepessoas.dao;
 
 import com.cadastrodepessoas.model.Usuario;
-import java.io.IOException;
 
 /**
  *
@@ -16,9 +15,7 @@ public interface ILogDAO {
 
     public void append(String mensagem) throws Exception;
 
-    public void carregaArquivo(String path) throws IOException;
-
-    public String getNomeCanonico();
+    public void carregaArquivo(String path) throws Exception;
 
     public void importaContatos(int sucesso, int incompletos, String userTime) throws Exception;
 
@@ -39,5 +36,7 @@ public interface ILogDAO {
     public void addUsuario(Usuario usuario, Usuario novousuario, String time) throws Exception;
 
     public void loginUsuario(Usuario usuario, boolean saiu, String time) throws Exception;
+
+    public String getName();
 
 }

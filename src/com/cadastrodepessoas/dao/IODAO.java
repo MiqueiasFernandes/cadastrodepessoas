@@ -17,15 +17,20 @@ import java.util.Properties;
  */
 public abstract class IODAO<T> {
 
-    protected T carregaDAOLog(String dao) throws Exception {
+    protected T carregaDAO(String dao, String path, boolean getPropriedade) throws Exception {
         T classeDAO;
-        Properties properties = new Properties();
-        FileInputStream fis = new FileInputStream("data/dao.properties");
-        properties.load(fis);
-        String daoOption = properties.getProperty(dao);
+        String daoOption = dao;
+
+        if (getPropriedade) {
+            Properties properties = new Properties();
+            FileInputStream fis = new FileInputStream("data/dao.properties");
+            properties.load(fis);
+            daoOption = properties.getProperty(dao);
+        }
+
         ClassLoader classLoader
                 = new URLClassLoader(
-                        new URL[]{new URL("file:data/" + daoOption + ".jar")},
+                        new URL[]{new URL("file:data/" + path + daoOption + ".jar")},
                         ClassLoader.getSystemClassLoader());
         Class classe
                 = Class.forName("com.cadastrodepessoas.dao." + daoOption, true, classLoader);

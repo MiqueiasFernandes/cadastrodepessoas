@@ -5,6 +5,8 @@
  */
 package com.cadastrodepessoas.view;
 
+import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
+import java.awt.Component;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuItem;
 
@@ -12,7 +14,7 @@ import javax.swing.JMenuItem;
  *
  * @author mfernandes
  */
-public class MainView extends javax.swing.JFrame {
+public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
 
     /**
      * Creates new form MainView
@@ -33,21 +35,15 @@ public class MainView extends javax.swing.JFrame {
         DesktopPane = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        adicionarJMenu = new javax.swing.JMenuItem();
-        listarJMenu = new javax.swing.JMenuItem();
         configurarJMenu = new javax.swing.JMenuItem();
         sairJMenu = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        adicionarJMenu = new javax.swing.JMenuItem();
+        listarJMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jMenu1.setText("Opções");
-
-        adicionarJMenu.setText("Adicionar");
-        jMenu1.add(adicionarJMenu);
-
-        listarJMenu.setText("Listar Pessoas");
-        jMenu1.add(listarJMenu);
 
         configurarJMenu.setText("Configurar");
         jMenu1.add(configurarJMenu);
@@ -57,7 +53,14 @@ public class MainView extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Cadastro");
+
+        adicionarJMenu.setText("Adicionar");
+        jMenu2.add(adicionarJMenu);
+
+        listarJMenu.setText("Listar Pessoas");
+        jMenu2.add(listarJMenu);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -107,4 +110,20 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem listarJMenu;
     private javax.swing.JMenuItem sairJMenu;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void addComponent(Component componente) {
+        DesktopPane.add(componente);
+        this.pack();
+    }
+
+    @Override
+    public Component getComponent() {
+        return this;
+    }
+
+    @Override
+    public void setTextNotificacao(String text) {
+        setTitle(text);
+    }
 }
