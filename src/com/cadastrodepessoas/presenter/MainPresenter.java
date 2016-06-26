@@ -93,6 +93,17 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
             }
         });
 
+        view.getAtualizarMenu().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    atualizarMenu(e);
+                } catch (Exception ex) {
+                    alertUser("ERRO: " + ex);
+                }
+            }
+        });
+
         if (!LoginSingleton.getInstancia().hasUsuarios()) {
             JOptionPane.showMessageDialog(view, "Cadastre o usuario administrador");
         }
@@ -101,7 +112,6 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
 
         view.setLocationRelativeTo(null);
         view.setVisible(true);
-
     }
 
     public boolean autenticar() {
@@ -139,6 +149,10 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
         if (autenticar()) {
 
         }
+    }
+
+    void atualizarMenu(ActionEvent e) throws Exception {
+        new AtualizarPresenter(pessoaDAO, view);
     }
 
     void configurarMenu(ActionEvent e) throws Exception {

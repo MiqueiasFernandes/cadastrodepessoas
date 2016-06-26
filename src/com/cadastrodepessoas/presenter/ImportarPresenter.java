@@ -166,9 +166,6 @@ public class ImportarPresenter extends Importa<Pessoa> {
             }
             view.setVisible(false);
             view.dispose();
-        } else if (modo == 3) {
-            view.setVisible(false);
-            view.dispose();
         }
     }
 

@@ -39,7 +39,7 @@ public class ExportarPresenter {
     private Element root;
     private Document document;
     private File file;
-    private int sucesso = 0, timeout = 5;
+    private int sucesso = 0, timeout = 5000;
     private boolean terminou = false;
 
     public ExportarPresenter(IPessoaDAO pessoaDAO, IStrategyDesktop desktop) {
@@ -159,6 +159,7 @@ public class ExportarPresenter {
 
     private void fimDaExportacao(Exception ex, IStrategyDesktop desktop) {
         if (!terminou) {
+            terminou = true;
             try {
                 LogSingleton log = LogSingleton.getInstancia();
                 if (ex == null) {

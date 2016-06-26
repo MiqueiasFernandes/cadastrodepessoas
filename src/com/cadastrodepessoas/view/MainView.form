@@ -36,6 +36,11 @@
                 <Property name="text" type="java.lang.String" value="Listar Pessoas"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="atualizarMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Atualizar 9&#xba; digito"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="importarMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Importar"/>

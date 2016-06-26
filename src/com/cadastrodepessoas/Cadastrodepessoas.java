@@ -20,7 +20,7 @@ public class Cadastrodepessoas {
         // TODO code application logic here
         try {
 
-             new MainPresenter();
+            new MainPresenter();
 
         } catch (Exception ex) {
             System.err.println(
@@ -32,6 +32,7 @@ public class Cadastrodepessoas {
                     + "contate o administrador com os detalhes do erro que seguem abaixo.\n"
                     + ex
             );
+            System.exit(-1);
         }
     }
 }
