@@ -5,20 +5,13 @@
  */
 package com.cadastrodepessoas;
 
-import com.cadastrodepessoas.dao.IODAO;
-import com.cadastrodepessoas.dao.IPessoaDAO;
 import com.cadastrodepessoas.presenter.MainPresenter;
-import com.cadastrodepessoas.presenter.patterns.observer.proxy.PessoasProxy;
-import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
-import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
-import com.cadastrodepessoas.view.MainView;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author mfernandes
  */
-public class Cadastrodepessoas extends IODAO<IPessoaDAO> {
+public class Cadastrodepessoas {
 
     /**
      * @param args the command line arguments
@@ -27,18 +20,7 @@ public class Cadastrodepessoas extends IODAO<IPessoaDAO> {
         // TODO code application logic here
         try {
 
-            LogSingleton log = LogSingleton.getInstancia();
-            LoginSingleton login = LoginSingleton.getInstancia();
-
-            MainView view = new MainView();
-
-            if (!login.hasUsuarios()) {
-                JOptionPane.showMessageDialog(view, "Cadastre o usuario administrador");
-            }
-
-            IPessoaDAO pessoas = new PessoasProxy(view);
-
-            new MainPresenter(pessoas, view);
+             new MainPresenter();
 
         } catch (Exception ex) {
             System.err.println(

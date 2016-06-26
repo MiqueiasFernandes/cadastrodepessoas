@@ -6,7 +6,6 @@
 package com.cadastrodepessoas.dao;
 
 import com.cadastrodepessoas.model.Usuario;
-import java.io.IOException;
 
 /**
  *
@@ -16,7 +15,7 @@ public interface IUsuarioDAO {
 
     public void add(Usuario usuario) throws Exception;
 
-    public void carregaUsuarios() throws IOException;
+    public void carregaUsuarios() throws Exception;
 
     public boolean contains(String name);
 

@@ -40,8 +40,11 @@ public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
         jMenu2 = new javax.swing.JMenu();
         adicionarJMenu = new javax.swing.JMenuItem();
         listarJMenu = new javax.swing.JMenuItem();
+        importarMenu = new javax.swing.JMenuItem();
+        exportarMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gestão de Contatos");
 
         jMenu1.setText("Opções");
 
@@ -53,13 +56,20 @@ public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Cadastro");
+        jMenu2.setText("Contatos");
 
         adicionarJMenu.setText("Adicionar");
         jMenu2.add(adicionarJMenu);
 
         listarJMenu.setText("Listar Pessoas");
         jMenu2.add(listarJMenu);
+
+        importarMenu.setText("Importar");
+        importarMenu.setToolTipText("");
+        jMenu2.add(importarMenu);
+
+        exportarMenu.setText("Exportar");
+        jMenu2.add(exportarMenu);
 
         jMenuBar1.add(jMenu2);
 
@@ -99,11 +109,21 @@ public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
         return sairJMenu;
     }
 
+    public JMenuItem getExportarMenu() {
+        return exportarMenu;
+    }
+
+    public JMenuItem getImportarMenu() {
+        return importarMenu;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane DesktopPane;
     private javax.swing.JMenuItem adicionarJMenu;
     private javax.swing.JMenuItem configurarJMenu;
+    private javax.swing.JMenuItem exportarMenu;
+    private javax.swing.JMenuItem importarMenu;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

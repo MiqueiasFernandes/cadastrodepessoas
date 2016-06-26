@@ -5,7 +5,7 @@
  */
 package com.cadastrodepessoas.presenter.patterns.singleton;
 
-import com.cadastrodepessoas.dao.IODAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
 import com.cadastrodepessoas.dao.IUsuarioDAO;
 import com.cadastrodepessoas.model.Usuario;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
@@ -20,14 +20,17 @@ import javax.swing.JOptionPane;
  */
 public final class LoginSingleton extends IODAO<IUsuarioDAO> {
 
-    private final IUsuarioDAO usuarios;
+    private IUsuarioDAO usuarioDAO;
     private static LoginSingleton instancia;
     private Usuario usuarioLogado;
     private LoginView view;
 
-    private LoginSingleton() throws Exception {
-        usuarios = carregaDAO("UsuarioDAO", "usuario/", true);
-        usuarios.carregaUsuarios();
+    private LoginSingleton() {
+    }
+
+    public void setUsuarioDAO(IUsuarioDAO usuarioDAO) throws Exception {
+        this.usuarioDAO = usuarioDAO;
+        usuarioDAO.carregaUsuarios();
     }
 
     public void adicionaUsuario(IStrategyLogin desktop, boolean administrador) {
@@ -40,13 +43,13 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
                     String senha = new String(userView.getSenhaTXT().getPassword());
                     Usuario usuario = new Usuario(nome, senha, administrador);
 
-                    if (usuarios.contains(nome)) {
+                    if (usuarioDAO.contains(nome)) {
                         JOptionPane.showMessageDialog(userView,
                                 "Esse usuario já existe, tente outro");
                         return;
                     }
 
-                    usuarios.add(usuario);
+                    usuarioDAO.add(usuario);
                     userView.setVisible(false);
                     userView.dispose();
                     LogSingleton.getInstancia().addUsuario(usuario);
@@ -124,7 +127,7 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
 
     private boolean logar(LoginView view) {
         String nome = view.getUsuarioTXT().getText();
-        Usuario usuario = usuarios.getUsuarioByName(nome);
+        Usuario usuario = usuarioDAO.getUsuarioByName(nome);
         if (usuario == null) {
             view.alertUser("Usuario inválido");
             return false;
@@ -160,7 +163,7 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
     }
 
     public boolean hasUsuarios() throws Exception {
-        return usuarios.count() > 0;
+        return usuarioDAO.count() > 0;
     }
 
 }

@@ -7,7 +7,7 @@ package com.cadastrodepessoas.dao;
 
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
-import java.util.TreeSet;
+import java.util.Iterator;
 
 /**
  *
@@ -27,7 +27,7 @@ public interface IPessoaDAO {
 
     public abstract Pessoa getPessoaByName(String nome) throws Exception;
 
-    public abstract TreeSet<Pessoa> getTreeSet() throws Exception;
+    public abstract Iterator<Pessoa> getIteratorParaConsulta() throws Exception;
 
     public boolean remove(String nome) throws Exception;
 }

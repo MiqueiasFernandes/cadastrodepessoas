@@ -6,7 +6,8 @@
 package com.cadastrodepessoas.presenter;
 
 import com.cadastrodepessoas.dao.ILogDAO;
-import com.cadastrodepessoas.dao.IODAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
@@ -21,7 +22,7 @@ import javax.swing.JOptionPane;
  *
  * @author mfernandes
  */
-public final class ConfigurarPresenter extends IODAO<ILogDAO> implements IStrategyLogin {
+public final class ConfigurarPresenter extends IODAO<IFabricaDAO> implements IStrategyLogin {
 
     private final ConfigurarView view;
     private final LoginSingleton login;
@@ -104,22 +105,22 @@ public final class ConfigurarPresenter extends IODAO<ILogDAO> implements IStrate
 
     void configuraTabLog() {
         try {
-            File path = new File("data/log/");
+            File path = new File("data/");
             if (path.exists()) {
-                ////lista os plugins da pasta, caso não exista na lista adiciona-os
                 for (String string : path.list()) {
                     if (string.contains(".jar")) {
-                        ILogDAO dao = carregaDAO(string.replace(".jar", ""), "log/", false);
+                        IFabricaDAO fabrica = carregaDAO(string.replace(".jar", ""), "", false);
+                        ILogDAO logDAO = fabrica.criaLogDAO();
                         boolean add = true;
                         for (int i = 0; i < view.getTipoLogDAOCbx().getItemCount(); i++) {
                             if (view.getTipoLogDAOCbx().getItemAt(i).toString()
-                                    .equals(dao.toString())) {
+                                    .equals(logDAO.toString())) {
                                 add = false;
                                 break;
                             }
                         }
                         if (add) {
-                            this.view.getTipoLogDAOCbx().addItem(dao);
+                            this.view.getTipoLogDAOCbx().addItem(logDAO);
                         }
                     }
                 }
@@ -131,7 +132,7 @@ public final class ConfigurarPresenter extends IODAO<ILogDAO> implements IStrate
 
     public void alteraLogDAO() {
         try {
-            LogSingleton.getInstancia().setLogDAO((ILogDAO) view.getTipoLogDAOCbx().getSelectedItem());
+            LogSingleton.getInstancia().setLogDAO((ILogDAO) view.getTipoLogDAOCbx().getSelectedItem(), true);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(view, "não foi possivel alterar o tipo de log.\n" + ex);
         }

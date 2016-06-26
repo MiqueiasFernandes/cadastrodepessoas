@@ -37,6 +37,6 @@ public interface ILogDAO {
 
     public void loginUsuario(Usuario usuario, boolean saiu, String time) throws Exception;
 
-    public String getName();
+    public String getFabricaName();
 
 }

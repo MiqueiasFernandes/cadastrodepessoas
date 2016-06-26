@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cadastrodepessoas.dao;
+package com.cadastrodepessoas.presenter.patterns.abstractfactory;
 
 import java.io.FileInputStream;
 import java.net.URL;
@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public abstract class IODAO<T> {
 
-    protected T carregaDAO(String dao, String path, boolean getPropriedade) throws Exception {
+    protected  T carregaDAO(String dao, String path, boolean getPropriedade) throws Exception {
         T classeDAO;
         String daoOption = dao;
 

@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cadastrodepessoas.presenter.patterns.observer.proxy;
+package com.cadastrodepessoas.presenter.patterns.proxy;
 
 import com.cadastrodepessoas.dao.IPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
 import com.cadastrodepessoas.presenter.patterns.observer.AbstractObservado;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
 import com.cadastrodepessoas.view.MainView;
-import java.util.TreeSet;
+import java.util.Iterator;
 
 /**
  *
@@ -24,8 +25,8 @@ public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPess
     PessoasReal pessoasReal;
     MainView view;
 
-    public PessoasProxy(MainView view) throws Exception {
-        pessoasReal = new PessoasReal();
+    public PessoasProxy(IFabricaDAO fabrica, MainView view) throws Exception {
+        pessoasReal = new PessoasReal(fabrica);
         this.view = view;
     }
 
@@ -88,9 +89,9 @@ public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPess
     }
 
     @Override
-    public TreeSet<Pessoa> getTreeSet() throws Exception {
+    public Iterator<Pessoa> getIteratorParaConsulta() throws Exception {
         if (autenticar()) {
-            return pessoasReal.getTreeSet();
+            return pessoasReal.getIteratorParaConsulta();
         } else {
             throw new Exception("É necessario estar autenticado para efetuar esta operação");
         }

@@ -6,7 +6,7 @@
 package com.cadastrodepessoas.presenter.patterns.singleton;
 
 import com.cadastrodepessoas.dao.ILogDAO;
-import com.cadastrodepessoas.dao.IODAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
 import com.cadastrodepessoas.model.Usuario;
 import java.io.File;
 import java.io.FileReader;
@@ -28,8 +28,6 @@ public final class LogSingleton extends IODAO<ILogDAO> {
     private static LogSingleton singleton;
 
     private LogSingleton() throws Exception {
-        logDAO = carregaDAO("LogDAO", "log/", true);
-        logDAO.carregaArquivo(logpPath);
     }
 
     public static LogSingleton getInstancia() throws Exception {
@@ -95,17 +93,18 @@ public final class LogSingleton extends IODAO<ILogDAO> {
         getLogDAO().loginUsuario(usuario, saiu, getTime());
     }
 
-    public void setLogDAO(ILogDAO iLogDAO) throws Exception {
+    public void setLogDAO(ILogDAO iLogDAO, boolean reportar) throws Exception {
         this.logDAO = iLogDAO;
         this.logDAO.carregaArquivo(logpPath);
 
-        File file = new File("data/dao.properties");
-        Properties properties = new Properties();
-        properties.load(new FileReader(file));
-        properties.put("LogDAO", logDAO.getName());
-        properties.store(new FileWriter(file), "salvo automaticamente " + getUsertTime());
-
-        logDAO.append("Tipo de log alterado " + getUsertTime());
+        if (reportar) {
+            File file = new File("data/dao.properties");
+            Properties properties = new Properties();
+            properties.load(new FileReader(file));
+            properties.put("fabricaLog", logDAO.getFabricaName());
+            properties.store(new FileWriter(file), "salvo automaticamente por " + getUsertTime());
+            logDAO.append("Tipo de log alterado para este por " + getUsertTime());
+        }
     }
 
     public ILogDAO getLogDAO() throws Exception {

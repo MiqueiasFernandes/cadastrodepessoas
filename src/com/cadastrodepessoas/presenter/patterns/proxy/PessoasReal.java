@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cadastrodepessoas.presenter.patterns.observer.proxy;
+package com.cadastrodepessoas.presenter.patterns.proxy;
 
-import com.cadastrodepessoas.dao.IODAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
 import com.cadastrodepessoas.dao.IPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -22,8 +23,8 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
     private final IPessoaDAO pessoaDAO;
     private final LogSingleton logSingleton;
 
-    public PessoasReal() throws Exception {
-        pessoaDAO = carregaDAO("PessoaDAO", "pessoa/", true);
+    public PessoasReal(IFabricaDAO fabrica) throws Exception {
+        pessoaDAO = fabrica.criaPessoaDAO();
         logSingleton = LogSingleton.getInstancia();
     }
 
@@ -109,10 +110,10 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
     }
 
     @Override
-    public TreeSet<Pessoa> getTreeSet() throws Exception {
-        TreeSet<Pessoa> pessoas = null;
+    public Iterator<Pessoa> getIteratorParaConsulta() throws Exception {
+        Iterator<Pessoa> pessoas = null;
         try {
-            pessoas = pessoaDAO.getTreeSet();
+            pessoas = pessoaDAO.getIteratorParaConsulta();
             logSingleton.consultarContatoLog("TODOAS PESSOAS", null);
         } catch (Exception ex) {
             logSingleton.consultarContatoLog("TODOAS PESSOAS", ex);

@@ -6,6 +6,10 @@
 package com.cadastrodepessoas.presenter;
 
 import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
+import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
+import com.cadastrodepessoas.presenter.patterns.proxy.PessoasProxy;
+import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
@@ -18,16 +22,26 @@ import javax.swing.JOptionPane;
  *
  * @author mfernandes
  */
-public final class MainPresenter implements IStrategyLogin {
+public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategyLogin {
 
     private final MainView view;
-    private final IPessoaDAO pessoas;
+    private final IPessoaDAO pessoaDAO;
 
-    public MainPresenter(IPessoaDAO pessoas, MainView view) {
-        this.view = view;
-        this.pessoas = pessoas;
+    public MainPresenter() throws Exception {
 
-        autenticar();
+        this.view = new MainView();
+
+        try {
+            ///o dao de log deve poder ser diferente e alterado em tempo de execução
+            IFabricaDAO fabricaLog = carregaDAO("fabricaLog", "", true);
+            LogSingleton.getInstancia().setLogDAO(fabricaLog.criaLogDAO(), false);
+
+            IFabricaDAO fabrica = carregaDAO("fabrica", "", true);
+            LoginSingleton.getInstancia().setUsuarioDAO(fabrica.criaUsuarioDAO());
+            pessoaDAO = new PessoasProxy(fabrica, view);
+        } catch (Exception ex) {
+            throw new Exception("Não Foi possivel carregar DAO's", ex);
+        }
 
         view.getAdicionarJMenu().addActionListener(new ActionListener() {
             @Override
@@ -61,8 +75,29 @@ public final class MainPresenter implements IStrategyLogin {
             }
         });
 
+        view.getImportarMenu().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                importarMenu(e);
+            }
+        });
+
+        view.getExportarMenu().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportarMenu(e);
+            }
+        });
+
+        if (!LoginSingleton.getInstancia().hasUsuarios()) {
+            JOptionPane.showMessageDialog(view, "Cadastre o usuario administrador");
+        }
+
+        autenticar();
+
         view.setLocationRelativeTo(null);
         view.setVisible(true);
+
     }
 
     public boolean autenticar() {
@@ -76,6 +111,18 @@ public final class MainPresenter implements IStrategyLogin {
 
     public void alertUser(String message) {
         JOptionPane.showMessageDialog(view, message);
+    }
+
+    public void importarMenu(ActionEvent e) {
+        if (autenticar()) {
+            new ImportarPresenter(pessoaDAO, view);
+        }
+    }
+
+    public void exportarMenu(ActionEvent e) {
+        if (autenticar()) {
+
+        }
     }
 
     void adicionarMenu(ActionEvent e) {
@@ -96,14 +143,14 @@ public final class MainPresenter implements IStrategyLogin {
         }
     }
 
-    void sairMenu(ActionEvent e) {
+    public void sairMenu(ActionEvent e) {
         view.setVisible(false);
         view.dispose();
     }
 
     @Override
     public void continuar() throws Exception {
-        pessoas.carregaPessoas();
+        pessoaDAO.carregaPessoas();
     }
 
     @Override

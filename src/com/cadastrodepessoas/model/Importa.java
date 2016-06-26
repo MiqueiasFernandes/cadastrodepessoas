@@ -7,7 +7,7 @@ package com.cadastrodepessoas.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.TreeSet;
 
 /**
  *
@@ -15,23 +15,19 @@ import java.util.List;
  */
 public abstract class Importa<T> {
 
-    int importadosComSucesso;
-    int importadosIncompletos;
-    List<T> collection;
-    ArrayList<Exception> erros;
+    protected boolean continuar = true;
+    protected int importadosComSucesso;
+    protected int importadosIncompletos;
+    protected TreeSet<T> collection;
+    protected ArrayList<Exception> erros;
 
-    public Importa(List<T> collection) {
-        this.collection = collection;
+    public Importa() {
         this.erros = new ArrayList<>();
+        collection = new TreeSet<T>();
     }
 
-    public List<T> getCollection() {
+    public TreeSet<T> getCollection() {
         return collection;
-    }
-
-    public void statusTotalPercent(int importados) {
-        int cem = 100 / collection.size();
-        statusTotal(cem * importados);
     }
 
     public abstract void statusTotal(int importados);
@@ -64,6 +60,14 @@ public abstract class Importa<T> {
 
     public Iterator<Exception> getIteratorErros() {
         return erros.iterator();
+    }
+
+    public boolean podeContinuar() {
+        return continuar;
+    }
+
+    public void setContinuar(boolean continuar) {
+        this.continuar = continuar;
     }
 
 }
