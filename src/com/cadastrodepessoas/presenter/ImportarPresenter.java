@@ -8,7 +8,6 @@ package com.cadastrodepessoas.presenter;
 import com.cadastrodepessoas.dao.IPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
-import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyImportar;
 import com.cadastrodepessoas.presenter.patterns.strategy.ImportarManagmentCollaboratorsSystem;

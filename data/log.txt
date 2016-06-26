@@ -1,1 +1,0 @@
-Tipo de log alterado para este por Usuario{nome=miqueias, senha=***, isadministrador=true} (25/06/2016 14:28:28)

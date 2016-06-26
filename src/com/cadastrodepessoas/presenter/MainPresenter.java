@@ -85,7 +85,11 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
         view.getExportarMenu().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                exportarMenu(e);
+                try {
+                    exportarMenu(e);
+                } catch (Exception ex) {
+                    alertUser("ERRO: " + ex);
+                }
             }
         });
 
@@ -119,9 +123,9 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
         }
     }
 
-    public void exportarMenu(ActionEvent e) {
+    public void exportarMenu(ActionEvent e) throws Exception {
         if (autenticar()) {
-
+            new ExportarPresenter(pessoaDAO, view);
         }
     }
 
