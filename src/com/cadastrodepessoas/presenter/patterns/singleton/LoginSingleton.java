@@ -143,7 +143,7 @@ public final class LoginSingleton extends IODAO<IUsuarioDAO> {
     }
 
     private boolean comparaSenhas(String senha1, String senha2) {
-        return true;// senha1.equals(senha2);
+        return senha1.equals(senha2);
     }
 
     public boolean autenticar(IStrategyLogin logavel) throws Exception {
