@@ -9,6 +9,7 @@ import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
+import com.cadastrodepessoas.presenter.patterns.observer.IObservador;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import java.util.Iterator;
 
@@ -50,7 +51,7 @@ public class PessoasReal extends AbstractPessoaDAO {
     @Override
     public void importar(Importa<Pessoa> importa) throws Exception {
         pessoaDAO.importar(importa);
-        pessoaDAO.notifyObservers(pessoaDAO);
+        pessoaDAO.notifyObservers(this);
         if (importa.hasErros()) {
             Iterator<Exception> iteratorErros = importa.getIteratorErros();
             while (iteratorErros.hasNext()) {
@@ -69,7 +70,7 @@ public class PessoasReal extends AbstractPessoaDAO {
         try {
             alterou = pessoaDAO.altera(novaPessoa, nome);
             if (alterou) {
-                pessoaDAO.notifyObservers(pessoaDAO);
+                pessoaDAO.notifyObservers(this);
                 logSingleton.corrigirContatoLog(nome, null);
             }
         } catch (Exception ex) {
@@ -129,7 +130,7 @@ public class PessoasReal extends AbstractPessoaDAO {
         try {
             removeu = pessoaDAO.remove(nome);
             if (removeu) {
-                pessoaDAO.notifyObservers(pessoaDAO);
+                pessoaDAO.notifyObservers(this);
                 logSingleton.excluirContatoLog(nome, null);
             }
         } catch (Exception ex) {
@@ -137,6 +138,11 @@ public class PessoasReal extends AbstractPessoaDAO {
             levantarException("remover");
         }
         return removeu;
+    }
+
+    @Override
+    public void addObservador(IObservador observador) throws Exception {
+        pessoaDAO.addObservador(observador);
     }
 
 }

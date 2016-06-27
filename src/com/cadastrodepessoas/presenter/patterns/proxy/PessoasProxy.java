@@ -9,6 +9,7 @@ import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
+import com.cadastrodepessoas.presenter.patterns.observer.IObservador;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
@@ -118,4 +119,10 @@ public class PessoasProxy extends AbstractPessoaDAO implements IStrategyLogin {
         return view;
     }
 
+    @Override
+    public void addObservador(IObservador observador) throws Exception {
+        if (autenticar()) {
+            pessoasReal.addObservador(observador);
+        }
+    }
 }

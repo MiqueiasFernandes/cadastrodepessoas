@@ -11,8 +11,12 @@ import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
  *
  * @author mfernandes
  */
-public interface Command {
+public class Excluir implements Command {
 
-    void execute(ContatoPresenter presenter) throws Exception;
+    @Override
+    public void execute(ContatoPresenter presenter) throws Exception {
+        presenter.getEstado().excluir();
+        presenter.getZelador().adicionaMemento(presenter.criaMemento());
+    }
 
 }

@@ -5,6 +5,9 @@
  */
 package com.cadastrodepessoas.view;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author mfernandes
@@ -33,6 +36,8 @@ public class ContatoView extends javax.swing.JInternalFrame {
         nomeTxt = new javax.swing.JTextField();
         telefoneTxt = new javax.swing.JTextField();
         esquerdoBtn = new javax.swing.JButton();
+
+        setClosable(true);
 
         direitoBtn.setText("direito");
 
@@ -83,6 +88,22 @@ public class ContatoView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public JButton getDireitoBtn() {
+        return direitoBtn;
+    }
+
+    public JButton getEsquerdoBtn() {
+        return esquerdoBtn;
+    }
+
+    public JTextField getNomeTxt() {
+        return nomeTxt;
+    }
+
+    public JTextField getTelefoneTxt() {
+        return telefoneTxt;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

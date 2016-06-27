@@ -8,6 +8,8 @@ package com.cadastrodepessoas.presenter;
 import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
+import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
+import com.cadastrodepessoas.presenter.patterns.memento.zelador.Zelador;
 import com.cadastrodepessoas.presenter.patterns.proxy.PessoasProxy;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
@@ -26,10 +28,12 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
 
     private final MainView view;
     private final AbstractPessoaDAO pessoaDAO;
+    private final Zelador zelador;
 
     public MainPresenter() throws Exception {
 
         this.view = new MainView();
+        this.zelador = new Zelador();
 
         try {
             ///o dao de log deve poder ser diferente e alterado em tempo de execução
@@ -46,14 +50,22 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
         view.getAdicionarJMenu().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                adicionarMenu(e);
+                try {
+                    adicionarMenu(e);
+                } catch (Exception ex) {
+                    alertUser("ERRO: " + ex);
+                }
             }
         });
 
         view.getListarJMenu().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listarMenu(e);
+                try {
+                    listarMenu(e);
+                } catch (Exception ex) {
+                    alertUser("ERRO: " + ex);
+                }
             }
         });
 
@@ -139,15 +151,15 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
         }
     }
 
-    void adicionarMenu(ActionEvent e) {
+    void adicionarMenu(ActionEvent e) throws Exception {
         if (autenticar()) {
-
+            new ContatoPresenter(null, pessoaDAO, view, zelador);
         }
     }
 
-    void listarMenu(ActionEvent e) {
+    void listarMenu(ActionEvent e) throws Exception {
         if (autenticar()) {
-            new ListarPresenter(pessoaDAO, view);
+            new ListarPresenter(pessoaDAO, view, zelador);
         }
     }
 

@@ -7,12 +7,11 @@ package com.cadastrodepessoas.presenter.patterns.command;
 
 import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
 
-/**
- *
- * @author mfernandes
- */
-public interface Command {
+public class Fechar implements Command {
 
-    void execute(ContatoPresenter presenter) throws Exception;
+    @Override
+    public void execute(ContatoPresenter presenter) throws Exception {
+        presenter.getEstado().fechar();
+    }
 
 }

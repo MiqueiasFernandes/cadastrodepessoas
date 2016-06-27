@@ -123,9 +123,8 @@ public class ImportarPresenter extends Importa<Pessoa> {
                 }
                 i--;
             }
-            thread.interrupt();
-            setContinuar(false);
-            fimDaImportacao(3);
+   //         setContinuar(false);
+   //         fimDaImportacao(3);
         }).start();
     }
 

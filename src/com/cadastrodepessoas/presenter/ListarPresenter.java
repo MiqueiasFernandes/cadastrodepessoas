@@ -8,6 +8,8 @@ package com.cadastrodepessoas.presenter;
 import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.model.TableSorter;
+import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
+import com.cadastrodepessoas.presenter.patterns.memento.zelador.Zelador;
 import com.cadastrodepessoas.presenter.patterns.observer.IObservador;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategySort;
@@ -37,16 +39,26 @@ public class ListarPresenter implements IObservador<AbstractPessoaDAO> {
     private AbstractPessoaDAO pessoaDAO;
     private IStrategySort sortDefault;
     private boolean orderDefault = true;
+    private IStrategyDesktop desktop;
+    private Zelador zelador;
 
-    public ListarPresenter(AbstractPessoaDAO pessoaDAO, IStrategyDesktop desktop) {
+    public ListarPresenter(AbstractPessoaDAO pessoaDAO, IStrategyDesktop desktop, Zelador zelador)
+            throws Exception {
         this.pessoaDAO = pessoaDAO;
         this.view = new ListarView();
         this.sortDefault = new SortNome();
+        this.desktop = desktop;
+        this.zelador = zelador;
+        pessoaDAO.addObservador(this);
 
         view.getNovoBtn().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                novo(e);
+                try {
+                    novo(e);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(view, "Erro: " + ex);
+                }
             }
         });
 
@@ -60,7 +72,11 @@ public class ListarPresenter implements IObservador<AbstractPessoaDAO> {
         view.getVisualizarBtn().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vizualizar(e);
+                try {
+                    vizualizar(e);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(view, "Erro: " + ex);
+                }
             }
         });
 
@@ -161,13 +177,14 @@ public class ListarPresenter implements IObservador<AbstractPessoaDAO> {
                         new String[]{pessoa.getNome(), pessoa.getTelefoneApresentativo()});
             }
 
+            tabela.repaint();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(view, "Não foi possivel carregar os dados\n" + ex);
         }
     }
 
-    void novo(ActionEvent e) {
-
+    void novo(ActionEvent e) throws Exception {
+        new ContatoPresenter(null, pessoaDAO, desktop, zelador);
     }
 
     void limparCampo(MouseEvent e) {
@@ -196,14 +213,22 @@ public class ListarPresenter implements IObservador<AbstractPessoaDAO> {
         }
     }
 
-    void vizualizar(ActionEvent e) {
+    void vizualizar(ActionEvent e) throws Exception {
 
+        JTable tabela = view.getTabela();
+
+        String nome = tabela.getValueAt(tabela.getSelectedRow(), 0).toString();
+
+        Pessoa pessoa = pessoaDAO.getPessoaByName(nome);
+
+        if (pessoa != null) {
+            new ContatoPresenter(pessoa, pessoaDAO, desktop, zelador);
+        }
     }
 
     @Override
     public void atualiza(AbstractPessoaDAO dado) {
         carregaContatos(dado, sortDefault, orderDefault);
-       // view.repaint();
     }
 
 }

@@ -16,7 +16,7 @@ public abstract class AbstractObservado<T> {
 
     private final HashSet<IObservador> observadores = new HashSet<>();
 
-    public void addObservador(IObservador observador) {
+    public void addObservador(IObservador observador) throws Exception {
         observadores.add(observador);
     }
 
