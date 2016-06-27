@@ -7,8 +7,6 @@ package com.cadastrodepessoas.presenter.patterns.memento;
 
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.command.Command;
-import com.cadastrodepessoas.presenter.patterns.state.AbstractState;
-import com.cadastrodepessoas.view.ContatoView;
 
 /**
  *
@@ -16,38 +14,26 @@ import com.cadastrodepessoas.view.ContatoView;
  */
 public final class Memento {
 
-    private AbstractState estado;
     private Pessoa pessoa;
-    private ContatoView view;
-    private Command commandBTNdireito;
-    private Command commandBTNesquerdo;
+    private String operacao;
+    private Command command;
 
-    public Memento(AbstractState estado, Pessoa pessoa, ContatoView view, Command commandBTNdireito, Command commandBTNesquerdo) {
-        this.estado = estado;
+    public Memento(Pessoa pessoa, String operacao, Command command) {
         this.pessoa = pessoa;
-        this.view = view;
-        this.commandBTNdireito = commandBTNdireito;
-        this.commandBTNesquerdo = commandBTNesquerdo;
-    }
-
-    protected AbstractState getEstado() {
-        return estado;
+        this.operacao = operacao;
+        this.command = command;
     }
 
     protected Pessoa getPessoa() {
         return pessoa;
     }
 
-    protected ContatoView getView() {
-        return view;
+    protected Command getCommand() {
+        return command;
     }
 
-    protected Command getCommandBTNdireito() {
-        return commandBTNdireito;
+    @Override
+    public String toString() {
+        return operacao;
     }
-
-    protected Command getCommandBTNesquerdo() {
-        return commandBTNesquerdo;
-    }
-
 }

@@ -43,6 +43,7 @@ public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
         atualizarMenu = new javax.swing.JMenuItem();
         importarMenu = new javax.swing.JMenuItem();
         exportarMenu = new javax.swing.JMenuItem();
+        desfazerMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestão de Contatos");
@@ -74,6 +75,11 @@ public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
 
         exportarMenu.setText("Exportar");
         jMenu2.add(exportarMenu);
+
+        desfazerMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/cadastrodepessoas/view/escan_effective_autobackup_and_restore.png"))); // NOI18N
+        desfazerMenu.setText("Desfazer...");
+        desfazerMenu.setEnabled(false);
+        jMenu2.add(desfazerMenu);
 
         jMenuBar1.add(jMenu2);
 
@@ -125,12 +131,17 @@ public class MainView extends javax.swing.JFrame implements IStrategyDesktop {
         return atualizarMenu;
     }
 
+    public JMenuItem getDesfazerMenu() {
+        return desfazerMenu;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane DesktopPane;
     private javax.swing.JMenuItem adicionarJMenu;
     private javax.swing.JMenuItem atualizarMenu;
     private javax.swing.JMenuItem configurarJMenu;
+    private javax.swing.JMenuItem desfazerMenu;
     private javax.swing.JMenuItem exportarMenu;
     private javax.swing.JMenuItem importarMenu;
     private javax.swing.JMenu jMenu1;

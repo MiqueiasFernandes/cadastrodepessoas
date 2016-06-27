@@ -5,7 +5,11 @@
  */
 package com.cadastrodepessoas.presenter.patterns.command;
 
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
+import com.cadastrodepessoas.presenter.patterns.memento.Memento;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,10 +17,25 @@ import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
  */
 public class Excluir implements Command {
 
+    AbstractPessoaDAO pessoaDAO;
+    ContatoPresenter presenter;
+
     @Override
     public void execute(ContatoPresenter presenter) throws Exception {
+        presenter.getZelador().adicionaMemento(presenter.criaMemento(this));
         presenter.getEstado().excluir();
-        presenter.getZelador().adicionaMemento(presenter.criaMemento());
+        pessoaDAO = presenter.getPessoaDAO();
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void desfaz(Memento memento) {
+        presenter.setMemento(memento);
+        try {
+            pessoaDAO.add(presenter.getPessoa());
+        } catch (Exception ex) {
+
+        }
     }
 
 }

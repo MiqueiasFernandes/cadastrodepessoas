@@ -127,16 +127,12 @@ public class ContatoPresenter implements IObservador<AbstractPessoaDAO> {
         return zelador;
     }
 
-    public Memento criaMemento() {
-        return new Memento(estado, pessoa, view, commandBTNdireito, commandBTNesquerdo);
+    public Memento criaMemento(Command command) {
+        return new Memento(pessoa, estado.toString(), command);
     }
 
     public void setMemento(Memento memento) {
-        this.estado = memento.getEstado();
         this.pessoa = memento.getPessoa();
-        this.view = memento.getView();
-        this.commandBTNesquerdo = memento.getCommandBTNesquerdo();
-        this.commandBTNdireito = memento.getCommandBTNdireito();
     }
 
     @Override
@@ -160,6 +156,10 @@ public class ContatoPresenter implements IObservador<AbstractPessoaDAO> {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(view, "Não foi possivel acompanhar atualização de dados.\n" + ex);
         }
+    }
+
+    public void carregar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

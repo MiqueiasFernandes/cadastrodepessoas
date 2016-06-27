@@ -71,4 +71,9 @@ public class Incluindo extends AbstractState {
 ///////////////////////////////////////////////////////////////////////////////
     }
 
+    @Override
+    public String toString() {
+        return "incluir " + presenter.getView().getNomeTxt().getText();
+    }
+
 }

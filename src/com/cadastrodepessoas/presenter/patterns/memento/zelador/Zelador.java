@@ -31,4 +31,14 @@ public class Zelador {
         return null;
     }
 
+    public int getSize() {
+        return estados.size();
+    }
+
+    public void removeUltimo() {
+        if (estados.size() > 0) {
+            estados.remove(estados.size() - 1);
+        }
+    }
+
 }

@@ -6,6 +6,7 @@
 package com.cadastrodepessoas.presenter;
 
 import com.cadastrodepessoas.dao.AbstractPessoaDAO;
+import com.cadastrodepessoas.presenter.patterns.memento.Desfazer;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
 import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
@@ -181,6 +182,7 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
     @Override
     public void continuar() throws Exception {
         pessoaDAO.carregaPessoas();
+        Desfazer desfazer = new Desfazer(zelador, pessoaDAO, view.getDesfazerMenu());
     }
 
     @Override

@@ -6,6 +6,7 @@
 package com.cadastrodepessoas.presenter.patterns.command;
 
 import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
+import com.cadastrodepessoas.presenter.patterns.memento.Memento;
 
 /**
  *
@@ -14,5 +15,7 @@ import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
 public interface Command {
 
     void execute(ContatoPresenter presenter) throws Exception;
+
+    void desfaz(Memento memento);
 
 }

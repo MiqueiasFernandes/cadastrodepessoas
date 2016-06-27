@@ -71,4 +71,9 @@ public class Editando extends AbstractState {
 ////////////////////////////////////////////////////////////
     }
 
+    @Override
+    public String toString() {
+        return "alterar " + presenter.getPessoa().getNome();
+    }
+
 }

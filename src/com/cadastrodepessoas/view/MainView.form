@@ -52,6 +52,15 @@
                 <Property name="text" type="java.lang.String" value="Exportar"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="desfazerMenu">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/com/cadastrodepessoas/view/escan_effective_autobackup_and_restore.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Desfazer..."/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

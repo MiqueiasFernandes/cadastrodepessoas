@@ -69,4 +69,8 @@ public class Vizualizando extends AbstractState {
 ///////////////////////////////////////////////////////////////////
     }
 
+    @Override
+    public String toString() {
+        return "excluir " + presenter.getPessoa().getNome();
+    }
 }

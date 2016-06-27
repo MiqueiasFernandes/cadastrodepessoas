@@ -6,13 +6,23 @@
 package com.cadastrodepessoas.presenter.patterns.command;
 
 import com.cadastrodepessoas.presenter.patterns.memento.ContatoPresenter;
+import com.cadastrodepessoas.presenter.patterns.memento.Memento;
 
 public class Editar implements Command {
 
+    private ContatoPresenter presenter;
+    
     @Override
     public void execute(ContatoPresenter presenter) throws Exception {
+       this.presenter = presenter;
+        presenter.getZelador().adicionaMemento(presenter.criaMemento(this));
         presenter.getEstado().editar();
-        presenter.getZelador().adicionaMemento(presenter.criaMemento());
+    }
+
+    @Override
+    public void desfaz(Memento memento) {
+       presenter.setMemento(memento);
+       presenter.carregar();
     }
 
 }
