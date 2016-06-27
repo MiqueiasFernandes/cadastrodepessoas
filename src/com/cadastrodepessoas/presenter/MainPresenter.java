@@ -5,7 +5,7 @@
  */
 package com.cadastrodepessoas.presenter;
 
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
 import com.cadastrodepessoas.presenter.patterns.proxy.PessoasProxy;
@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategyLogin {
 
     private final MainView view;
-    private final IPessoaDAO pessoaDAO;
+    private final AbstractPessoaDAO pessoaDAO;
 
     public MainPresenter() throws Exception {
 
@@ -147,7 +147,7 @@ public final class MainPresenter extends IODAO<IFabricaDAO> implements IStrategy
 
     void listarMenu(ActionEvent e) {
         if (autenticar()) {
-
+            new ListarPresenter(pessoaDAO, view);
         }
     }
 

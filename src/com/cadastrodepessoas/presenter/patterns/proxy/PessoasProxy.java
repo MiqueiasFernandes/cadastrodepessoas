@@ -5,11 +5,10 @@
  */
 package com.cadastrodepessoas.presenter.patterns.proxy;
 
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
-import com.cadastrodepessoas.presenter.patterns.observer.AbstractObservado;
 import com.cadastrodepessoas.presenter.patterns.singleton.LoginSingleton;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyLogin;
@@ -20,7 +19,7 @@ import java.util.Iterator;
  *
  * @author mfernandes
  */
-public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPessoaDAO, IStrategyLogin {
+public class PessoasProxy extends AbstractPessoaDAO implements IStrategyLogin {
 
     PessoasReal pessoasReal;
     MainView view;
@@ -66,7 +65,6 @@ public class PessoasProxy extends AbstractObservado<IPessoaDAO> implements IPess
     public void carregaPessoas() throws Exception {
         if (autenticar()) {
             pessoasReal.carregaPessoas();
-            notifyObservers(this);
         }
     }
 

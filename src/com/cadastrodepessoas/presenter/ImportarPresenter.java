@@ -5,7 +5,7 @@
  */
 package com.cadastrodepessoas.presenter;
 
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.strategy.IStrategyDesktop;
@@ -26,12 +26,12 @@ public class ImportarPresenter extends Importa<Pessoa> {
 
     private final IStrategyDesktop desktop;
     private final ImportarView view;
-    private final IPessoaDAO pessoaDAO;
+    private final AbstractPessoaDAO pessoaDAO;
     private IStrategyImportar strategyImportar;
     private final int timeout = 3000;
     private boolean terminou = false;
 
-    public ImportarPresenter(IPessoaDAO pessoaDAO, IStrategyDesktop desktop) {
+    public ImportarPresenter(AbstractPessoaDAO pessoaDAO, IStrategyDesktop desktop) {
         this.desktop = desktop;
         this.pessoaDAO = pessoaDAO;
         view = new ImportarView();

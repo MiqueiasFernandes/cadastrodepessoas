@@ -6,7 +6,6 @@
 package com.cadastrodepessoas.view;
 
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -48,15 +47,15 @@ public class LoginView extends javax.swing.JInternalFrame {
 
         jLabel2.setText("senha:");
 
-        usuarioTXT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                usuarioTXTKeyTyped(evt);
+        usuarioTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuarioTXTActionPerformed(evt);
             }
         });
 
-        senhaTXT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                usuarioTXTKeyTyped(evt);
+        senhaTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuarioTXTActionPerformed(evt);
             }
         });
 
@@ -97,14 +96,11 @@ public class LoginView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void usuarioTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuarioTXTKeyTyped
-        // TODO add your handling code here:
-        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-            for (ActionListener actionListener : prontoBTN.getActionListeners()) {
-                actionListener.actionPerformed(null);
-            }
+    private void usuarioTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTXTActionPerformed
+        for (ActionListener actionListener : prontoBTN.getActionListeners()) {
+            actionListener.actionPerformed(null);
         }
-    }//GEN-LAST:event_usuarioTXTKeyTyped
+    }//GEN-LAST:event_usuarioTXTActionPerformed
 
     public boolean validarCampos() {
         if (usuarioTXT.getText().isEmpty() || senhaTXT.getPassword().length < 1) {

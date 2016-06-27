@@ -5,7 +5,7 @@
  */
 package com.cadastrodepessoas.presenter;
 
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.chain.EstadoProcessor;
 import com.cadastrodepessoas.presenter.patterns.chain.OperadoraProcessor;
@@ -42,7 +42,7 @@ public class ExportarPresenter {
     private int sucesso = 0, timeout = 5000;
     private boolean terminou = false;
 
-    public ExportarPresenter(IPessoaDAO pessoaDAO, IStrategyDesktop desktop) {
+    public ExportarPresenter(AbstractPessoaDAO pessoaDAO, IStrategyDesktop desktop) {
         try {
             JFileChooser chooser = new JFileChooser();
             chooser.setApproveButtonText("salvar");
@@ -79,7 +79,7 @@ public class ExportarPresenter {
         }
     }
 
-    void exportar(IPessoaDAO pessoaDAO, String arquivo) throws Exception {
+    void exportar(AbstractPessoaDAO pessoaDAO, String arquivo) throws Exception {
         if (carregarArquivo(arquivo)) {
             Iterator<Pessoa> iterator = pessoaDAO.getIteratorParaConsulta();
             EstadoProcessor estadoProcessor = new EstadoProcessor();

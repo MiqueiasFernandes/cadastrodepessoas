@@ -6,7 +6,7 @@
 package com.cadastrodepessoas.presenter.patterns.abstractfactory;
 
 import com.cadastrodepessoas.dao.ILogDAO;
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.dao.IUsuarioDAO;
 
 /**
@@ -15,7 +15,7 @@ import com.cadastrodepessoas.dao.IUsuarioDAO;
  */
 public interface IFabricaDAO {
 
-    IPessoaDAO criaPessoaDAO() throws Exception;
+    AbstractPessoaDAO criaPessoaDAO() throws Exception;
 
     IUsuarioDAO criaUsuarioDAO() throws Exception;
 

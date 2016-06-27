@@ -5,22 +5,20 @@
  */
 package com.cadastrodepessoas.presenter.patterns.proxy;
 
-import com.cadastrodepessoas.presenter.patterns.abstractfactory.IODAO;
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Importa;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.abstractfactory.IFabricaDAO;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 /**
  *
  * @author mfernandes
  */
-public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
+public class PessoasReal extends AbstractPessoaDAO {
 
-    private final IPessoaDAO pessoaDAO;
+    private final AbstractPessoaDAO pessoaDAO;
     private final LogSingleton logSingleton;
 
     public PessoasReal(IFabricaDAO fabrica) throws Exception {
@@ -39,6 +37,7 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
         try {
             adicionou = pessoaDAO.add(pessoa);
             if (adicionou) {
+                pessoaDAO.notifyObservers(pessoaDAO);
                 logSingleton.incluirContatoLog(pessoa.getNome(), null);
             }
         } catch (Exception ex) {
@@ -51,6 +50,7 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
     @Override
     public void importar(Importa<Pessoa> importa) throws Exception {
         pessoaDAO.importar(importa);
+        pessoaDAO.notifyObservers(pessoaDAO);
         if (importa.hasErros()) {
             Iterator<Exception> iteratorErros = importa.getIteratorErros();
             while (iteratorErros.hasNext()) {
@@ -69,6 +69,7 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
         try {
             alterou = pessoaDAO.altera(novaPessoa, nome);
             if (alterou) {
+                pessoaDAO.notifyObservers(pessoaDAO);
                 logSingleton.corrigirContatoLog(nome, null);
             }
         } catch (Exception ex) {
@@ -128,6 +129,7 @@ public class PessoasReal extends IODAO<IPessoaDAO> implements IPessoaDAO {
         try {
             removeu = pessoaDAO.remove(nome);
             if (removeu) {
+                pessoaDAO.notifyObservers(pessoaDAO);
                 logSingleton.excluirContatoLog(nome, null);
             }
         } catch (Exception ex) {

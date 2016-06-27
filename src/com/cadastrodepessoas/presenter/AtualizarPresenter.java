@@ -5,7 +5,7 @@
  */
 package com.cadastrodepessoas.presenter;
 
-import com.cadastrodepessoas.dao.IPessoaDAO;
+import com.cadastrodepessoas.dao.AbstractPessoaDAO;
 import com.cadastrodepessoas.model.Pessoa;
 import com.cadastrodepessoas.presenter.patterns.chain.NonoDigitoProcessor;
 import com.cadastrodepessoas.presenter.patterns.singleton.LogSingleton;
@@ -21,7 +21,7 @@ public class AtualizarPresenter {
 
     private int atualizados = 0, falha = 0;
 
-    public AtualizarPresenter(IPessoaDAO pessoaDAO, IStrategyDesktop desktop) throws Exception {
+    public AtualizarPresenter(AbstractPessoaDAO pessoaDAO, IStrategyDesktop desktop) throws Exception {
         if (JOptionPane.showConfirmDialog(desktop.getComponent(),
                 "Todos contatos da lista considerados completos vão receber o NONO digito",
                 "Confirmar UpGrade", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -43,7 +43,7 @@ public class AtualizarPresenter {
         }
     }
 
-    void atualizar(IPessoaDAO pessoaDAO, IStrategyDesktop desktop) throws Exception {
+    void atualizar(AbstractPessoaDAO pessoaDAO, IStrategyDesktop desktop) throws Exception {
         NonoDigitoProcessor processor = new NonoDigitoProcessor();
         Iterator<Pessoa> iterator = pessoaDAO.getIteratorParaConsulta();
         while (iterator.hasNext()) {
@@ -68,7 +68,7 @@ public class AtualizarPresenter {
         }
     }
 
-    void atualizaPessoa(IPessoaDAO dao, Pessoa pessoa, String telefone) throws Exception {
+    void atualizaPessoa(AbstractPessoaDAO dao, Pessoa pessoa, String telefone) throws Exception {
         String nome = pessoa.getNome();
         Pessoa nova = new Pessoa(nome, telefone);
         dao.altera(nova, nome);
